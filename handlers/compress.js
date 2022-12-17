@@ -3,7 +3,7 @@ import zlib from 'zlib';
 import path, { sep } from 'path';
 import { stat } from 'fs/promises';
 import { pipeline } from 'stream/promises';
-import { red,errorMessage, currentMessage } from '../constants/constants.js';
+import { red, green, errorMessage, currentMessage, resetColor } from '../constants/constants.js';
 
 
 const compressFileFromDirectory = async (dir, args) => {
@@ -13,21 +13,23 @@ const compressFileFromDirectory = async (dir, args) => {
           filePath.lastIndexOf(sep) + 1,
           filePath.length
         ); 
-        const newFilePath = path.resolve(args[1], fileName);
+        const newFilePath = path.resolve(dir, args[1]);
+        console.log(newFilePath);
         await stat(filePath);
-        await stat(args[1]);
+        await stat(newFilePath);
         const gzip = zlib.createGzip();
         const r_stream = createReadStream(filePath);
-        const w_stream = createWriteStream(newFilePath);
+        const w_stream = createWriteStream(path.resolve(newFilePath, fileName));
         await pipeline(
             r_stream,
             gzip, w_stream,
           );
+        console.log(green, 'The file was compressed', resetColor);
 
     } catch (error) {
-        console.log(red, errorMessage, ': ', error.message);
+        console.log(red, errorMessage, ': ', error.message, resetColor);
     }
-    console.log(currentMessage, dir)
+    console.log(currentMessage, dir, resetColor)
 }
 
 export {compressFileFromDirectory}

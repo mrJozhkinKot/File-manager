@@ -1,7 +1,7 @@
 import { rename } from 'fs/promises';
 import path, { sep } from 'path';
 import { stat } from 'fs/promises';
-import { red, green, errorMessage } from '../constants/constants.js';
+import { red, green, resetColor, errorMessage } from '../constants/constants.js';
 
 const renameFileInDirectory = async (dir, args) => {
   try {
@@ -10,9 +10,9 @@ const renameFileInDirectory = async (dir, args) => {
     const newFilePath = path.resolve(newDirection, args[1]);
     await stat(filePath);
     rename(filePath, newFilePath);
-    console.log(green, 'The file was renamed');
+    console.log(green, 'The file was renamed', resetColor);
   } catch (error) {
-    console.log(red, errorMessage, ': ', error.message);
+    console.log(red, errorMessage, ': ', error.message, resetColor);
   }
   console.log(currentMessage, dir);
 };

@@ -2,6 +2,7 @@ import os from 'os';
 import {
   red,
   green,
+  resetColor,
   currentMessage,
   errorMessage,
 } from '../constants/constants.js';
@@ -30,7 +31,7 @@ const getOSInfo = async (dir, [args]) => {
       console.log(os.arch());
       break;
     default:
-      console.log(red, errorMessage);
+      console.log(red, errorMessage, resetColor);
   }
   console.log(currentMessage, dir);
 };

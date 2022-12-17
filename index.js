@@ -4,6 +4,7 @@ import * as readline from 'readline';
 import {
   red,
   yellow,
+  resetColor,
   errorMessage,
   welcomeMessage,
   currentMessage,
@@ -27,23 +28,22 @@ import { decompressFileFromDirectory } from './handlers/decompress.js';
 const rl = readline.createInterface({ input, output });
 const args = getArgs(process.argv);
 let currentDirectory = os.homedir();
-console.log(yellow, welcomeMessage, args);
+console.log(yellow, welcomeMessage, args, resetColor);
 console.log(currentMessage, currentDirectory);
 
 const logCurrentDirectory = async (dir, args) => {
   const newPath = await getCurrentDirectory(dir, args);
   currentDirectory = newPath ? newPath : currentDirectory;
-  console.log(currentMessage, currentDirectory);
 };
 
 try {
   rl.on('line', async (input) => {
     const rline = input.toString().trim();
-    let [command, ...cArgs] = input.split(' ');
+    let [command, ...cArgs] = rline.split(' ');
 
     switch (command) {
       case '.exit':
-        output.write(yellow, thankMessage, args, farewellMessage);
+        console.log(yellow, thankMessage, args, farewellMessage, resetColor);
         process.exit();
       case 'cd':
         await logCurrentDirectory(currentDirectory, cArgs);
@@ -90,9 +90,9 @@ try {
   });
 
   rl.on('SIGINT', () => {
-    console.log(yellow, thankMessage, args, farewellMessage);
+    console.log(yellow, thankMessage, args, farewellMessage, resetColor);
     process.exit();
   });
 } catch (error) {
-  console.log(red, errorMessage);
+  console.log(red, errorMessage, resetColor);
 }

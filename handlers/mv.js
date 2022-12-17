@@ -10,11 +10,11 @@ const moveFileFromDirectory = async (dir, args) => {
       filePath.lastIndexOf(sep) + 1,
       filePath.length
     );
+    const newFilePath = path.resolve(args[1]);
     await stat(filePath);
-    await stat(args[1]);
-    const newFilePath = path.resolve(args[1], fileName);
+    await stat(newFilePath);
     const readable = createReadStream(filePath, { encoding: 'utf8' });
-    const writable = createWriteStream(newFilePath);
+    const writable = createWriteStream(path.resolve(newFilePath, fileName));
     readable.on('end', () => {
       rm(filePath);
     });

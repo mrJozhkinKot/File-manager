@@ -12,17 +12,18 @@ const decompressFileFromDirectory = async(dir, args) => {
           filePath.lastIndexOf(sep) + 1,
           filePath.length
         ); 
-        const newFilePath = path.resolve(args[1], fileName);
+        const newFilePath = path.resolve(dir, args[1]);
         await stat(filePath);
-        await stat(args[1]);
+        await stat(newFilePath);
         const gzip = zlib.createGunzip();
         const r_stream = createReadStream(filePath);
-        const w_stream = createWriteStream(newFilePath);
+        const w_stream = createWriteStream(path.resolve(newFilePath,fileName));
     
         await pipeline(
             r_stream,
             gzip, w_stream,
           );
+        console.log(green, 'The file was decompressed', resetColor);
     } catch (error) {
         console.log(red, errorMessage, ':', error.message)
     }
