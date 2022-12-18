@@ -1,6 +1,6 @@
 import path from 'path';
 import { stat } from 'node:fs/promises';
-import { red, errorPathMessage, currentMessage, resetColor } from '../constants/constants.js';
+import { red, errorPathMessage, resetColor } from '../constants/constants.js';
 
 const getCurrentDirectory = async (dir, [nextPath]) => {
   try {
@@ -10,7 +10,6 @@ const getCurrentDirectory = async (dir, [nextPath]) => {
   } catch (error) {
     console.log(red, errorPathMessage, ': ', error.message, resetColor);
   }
-  console.log(currentMessage, dir, resetColor);
 };
 
 export { getCurrentDirectory };

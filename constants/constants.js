@@ -5,6 +5,7 @@ export const resetColor = '\x1b[0m';
 export const errorMessage = 'Operation failed';
 export const errorPathMessage = 'Invalid path';
 export const welcomeMessage = 'Welcome to the File Manager, ';
+export const commandError = 'Unknowing command';
 export const currentMessage = 'You are currently in';
 export const thankMessage = 'Thank you for using File Manager, ';
 export const farewellMessage = ',goodbye!:)';

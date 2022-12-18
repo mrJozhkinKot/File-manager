@@ -6,6 +6,7 @@ import {
   yellow,
   resetColor,
   errorMessage,
+  commandError,
   welcomeMessage,
   currentMessage,
   thankMessage,
@@ -13,6 +14,7 @@ import {
 } from './constants/constants.js';
 import { getArgs } from './handlers/args.js';
 import { getCurrentDirectory } from './handlers/cd.js';
+import { getUpperDirectory } from './handlers/up.js';
 import { printFilesFromDirectory } from './handlers/ls.js';
 import { readFileFromDirectory } from './handlers/cat.js';
 import { addFileToDirectory } from './handlers/add.js';
@@ -31,10 +33,6 @@ let currentDirectory = os.homedir();
 console.log(yellow, welcomeMessage, args, resetColor);
 console.log(currentMessage, currentDirectory);
 
-const logCurrentDirectory = async (dir, args) => {
-  const newPath = await getCurrentDirectory(dir, args);
-  currentDirectory = newPath ? newPath : currentDirectory;
-};
 
 try {
   rl.on('line', async (input) => {
@@ -46,13 +44,17 @@ try {
         console.log(yellow, thankMessage, args, farewellMessage, resetColor);
         process.exit();
       case 'cd':
-        await logCurrentDirectory(currentDirectory, cArgs);
+        const newDir = await getCurrentDirectory(currentDirectory, cArgs);
+        currentDirectory = newDir ? newDir : currentDirectory;
+        console.log(currentMessage, currentDirectory);
         break;
       case 'up':
-        await logCurrentDirectory(currentDirectory, ['..']);
+          const upDir = await getUpperDirectory(currentDirectory, cArgs);
+          currentDirectory = upDir ? upDir : currentDirectory;
+          console.log(currentMessage, currentDirectory);
         break;
       case 'ls':
-        await printFilesFromDirectory(currentDirectory);
+        await printFilesFromDirectory(currentDirectory, cArgs);
         break;
       case 'cat':
         await readFileFromDirectory(currentDirectory, cArgs);
@@ -85,7 +87,7 @@ try {
         await decompressFileFromDirectory(currentDirectory, cArgs);
         break;
       default:
-        console.log(red, errorMessage);
+        console.log(red, commandError, resetColor);
     }
   });
 
