@@ -15,7 +15,7 @@ const getOSInfo = async (dir, [args]) => {
     case '--cpus':
       const cpus = [];
       os.cpus().forEach((c) => {
-        const cpu = new Object({ model: c.model, speed: c.speed });
+        const cpu = new Object({ model: c.model, 'clock rate': `${c.speed}` });
         cpus.push(cpu);
       });
       console.log(green, 'Total CPUS:', cpus.length);

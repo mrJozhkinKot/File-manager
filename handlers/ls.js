@@ -20,7 +20,7 @@ const printFilesFromDirectory = async (dir, args) => {
         newArr.push(obj);
         return newArr;
       }, []);
-    console.table(data);
+    console.table(data.sort((a,b) => a.Name < b.Name? 1: -1).sort((a,b) => a.Type < b.Type? 1: -1));
     }
   } catch (error) {
     console.log(red, errorMessage, ':', error.message, resetColor);
